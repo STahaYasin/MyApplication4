@@ -1,0 +1,22 @@
+<!-- Default language *** EN *** -->
+<resources>
+    <string name="app_name">DigitalScreen</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_uuid">UuidActivity</string>
+    <string name="title_activity_playlistloader">PlaylistloaderActivity</string>
+
+    <string name="name">Name</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_play_list">PlayListActivity</string>
+
+    <!-- activity_uuid -->
+    <string name="activity_uuid_desc_uuid">Dit is je UUID. Deze moet je ingeven in de webmanager om te koppelen aan jouw account. Vanaf dat je een playlist koppelt aan je apparaat, begint deze automatisch te spelen.</string>
+    <string name="activity_uuid_loading_uuid">Looking for a UUID..</string>
+
+    <!-- TODO PlayListLoaderActivity here -->
+
+
+    <!-- TODO PlayListActivity here -->
+</resources>
