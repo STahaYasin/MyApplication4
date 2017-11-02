@@ -41,7 +41,7 @@ public class FragmentFactory {
             case "21": fragment = new Fragment_X();  break;
             case "22": fragment = new Fragment_X();  break;
             case "23": fragment = new Fragment_X();  break;
-            case "24": fragment = new Fragment_X();  break; // Facebook likes
+            case "24": fragment = new Fragment_24();  break; // Facebook likes
             case "25": fragment = new Fragment_X();  break;
             case "26": fragment = new Fragment_X();  break;
             case "27": fragment = new Fragment_X();  break;
@@ -54,7 +54,7 @@ public class FragmentFactory {
             case "33": fragment = new Fragment_X();  break;
             case "34": fragment = new Fragment_X();  break;
             case "35": fragment = new Fragment_X();  break;
-            case "36": fragment = new Fragment_X();  break;
+            case "36": fragment = new Fragment_36();  break; // De standaard
             case "37": fragment = new Fragment_X();  break;
             case "38": fragment = new Fragment_X();  break;
             case "39": fragment = new Fragment_X();  break;
@@ -71,11 +71,11 @@ public class FragmentFactory {
             case "49": fragment = new Fragment_X();  break;
 
             case "50": fragment = new Fragment_X();  break;
-            case "51": fragment = new Fragment_X();  break;
+            case "51": fragment = new Fragment_51();  break; // Kinepolis
             case "52": fragment = new Fragment_X();  break;
             case "53": fragment = new Fragment_X();  break;
             case "54": fragment = new Fragment_X();  break;
-            case "55": fragment = new Fragment_X();  break;
+            case "55": fragment = new Fragment_55();  break; // Wifi
             case "56": fragment = new Fragment_X();  break;
             case "57": fragment = new Fragment_57();  break; // Verkeer
             case "58": fragment = new Fragment_X();  break;

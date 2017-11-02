@@ -245,7 +245,7 @@ public class Fragment_20 extends Fragment_00 {
 
                 holder.tv_text.setText(sp, TextView.BufferType.SPANNABLE);
             }
-            if(holder.tv_username != null)holder.tv_username.setText("@" + tweet.getUser().name + " at: " + tweet.getCreated_at());
+            if(holder.tv_username != null)holder.tv_username.setText("@" + tweet.getUser().name + " at: " + DateTimeFactory.parseDateToddMMyyyy(tweet.getCreated_at(), "EEE MMM dd HH:mm:ss Z yyyy", "EEE, d MMM yyyy HH:mm"));
         }
 
         @Override

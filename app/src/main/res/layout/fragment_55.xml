@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/twiter_bg"
+        android:src="@drawable/wif_bg"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"/>
 
@@ -44,7 +44,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/fragment_20_name"
+                        android:id="@+id/fragment_55_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -98,18 +98,37 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="80"
-                android:paddingBottom="25dp"
-                android:paddingEnd="50dp"
+                android:paddingEnd="35dp"
                 android:paddingStart="25dp"
+                android:weightSum="100"
+                android:orientation="vertical"
                 android:paddingTop="15dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/fragment_20_rv"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="86"></LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fragment_55_ssid"
+                    android:text="SSID"
+                    android:textAlignment="textEnd"
+                    android:textSize="30sp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"></LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    android:id="@+id/fragment_55_wacht"
+                    android:textSize="30sp"
+                    android:text="WACHTWOORD"/>
 
-                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 

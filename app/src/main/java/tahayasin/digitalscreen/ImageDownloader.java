@@ -21,6 +21,11 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 
     protected Bitmap doInBackground(String... urls) {
+        //TODO First check if file excists;
+
+
+
+        //If not download the file
         String urldisplay = url;
         Bitmap mIcon11 = null;
         try {
