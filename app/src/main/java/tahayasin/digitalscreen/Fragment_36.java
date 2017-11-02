@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class Fragment_36 extends Fragment_00 {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_36, container, false);
+        View v = inflater.inflate(R.layout.fragment_36, container, false);
 
         iv_background = (ImageView) v.findViewById(R.id.fragment_0_background);
         rv = (RecyclerView) v.findViewById(R.id.fragment_36_rv);
@@ -189,7 +190,7 @@ public class Fragment_36 extends Fragment_00 {
                 holder.tv_title.setText(items[position].title);
 
             if(holder.tv_description != null)
-                holder.tv_description.setText(items[position].description);
+                holder.tv_description.setText(Html.fromHtml(items[position].description));
 
             if(holder.iv_image != null){
                 if(items[position].enclosure != null && items[position].enclosure.url != ""){

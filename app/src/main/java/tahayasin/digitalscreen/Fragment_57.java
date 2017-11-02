@@ -13,10 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.XML;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.IOException;
 
 
 public class Fragment_57 extends Fragment_00 {
@@ -96,7 +99,7 @@ public class Fragment_57 extends Fragment_00 {
     private void downloadData(){
         final WebView _webView = webView;
 
-        Thread t = new Thread(new Runnable() {
+        /*Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 String a;
@@ -139,8 +142,46 @@ public class Fragment_57 extends Fragment_00 {
 
                             webView.loadUrl("http://www.filebeeld.be/mobiel/kaart?region=antwerpen#info");
 
+
                         }
                     });
+                }
+            }
+        });*/
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String a;
+
+                try{
+                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=antwerpen").execute().get(); // TODO region
+                }
+                catch (Exception e){
+                    a = "";
+                }
+
+                final String domString = a;
+
+                try {
+                    Document htmlDocument = Jsoup.parse(a);
+                    //Document htmlDocument = Jsoup.connect("http://darebee.com/").get(); // TODO original code
+                    Element element = htmlDocument.select("table").first().parent().parent();
+
+                    // replace body with selected element
+                    htmlDocument.body().empty().append(element.toString());
+                    final String html = htmlDocument.toString();
+
+                    if(getActivity() != null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                webView.loadData(html, "text/html", "UTF-8");
+                            }
+                        });
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
