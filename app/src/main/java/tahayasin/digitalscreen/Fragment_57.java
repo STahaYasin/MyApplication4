@@ -42,7 +42,9 @@ public class Fragment_57 extends Fragment_00 {
         tv_type = (TextView) v.findViewById(R.id.fragment_x_type);
         iv_background = (ImageView) v.findViewById(R.id.background);
         iv_imageData = (ImageView) v.findViewById(R.id.iv_imageData);
-        webView = (WebView)v.findViewById(R.id.webview);
+        webView = (WebView)v.findViewById(R.id.fragment_57_webview);
+
+        webView.setBackgroundColor(0x00000000);
 
         return v;
     }
@@ -154,7 +156,7 @@ public class Fragment_57 extends Fragment_00 {
                 String a;
 
                 try{
-                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=antwerpen").execute().get(); // TODO region
+                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=" + playListObject.getVariabele()).execute().get(); // TODO region
                 }
                 catch (Exception e){
                     a = "";
@@ -169,13 +171,19 @@ public class Fragment_57 extends Fragment_00 {
 
                     // replace body with selected element
                     htmlDocument.body().empty().append(element.toString());
-                    final String html = htmlDocument.toString();
+                    String html = htmlDocument.toString();
+
+                    html = html.replace("<!-- header.vm -->", "<base href=\"http://www.filebeeld.be/\"/>");
+                    html = html.replace("class=", "style=\"color:#fff;\" class=");
+
+                    final String fHtml = html;
+
 
                     if(getActivity() != null){
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                webView.loadData(html, "text/html", "UTF-8");
+                                webView.loadData(fHtml, "text/html", "UTF-8");
                             }
                         });
                     }

@@ -78,8 +78,9 @@
 
             <WebView
                 android:layout_width="match_parent"
-                android:id="@+id/webview"
+                android:id="@+id/fragment_57_webview"
                 android:layout_marginLeft="25dp"
+                android:padding="5dp"
                 android:layout_height="match_parent"></WebView>
 
 

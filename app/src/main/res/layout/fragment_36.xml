@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="82dp"
                 android:id="@+id/fragment_36_date"
-                android:text="Hallo"/>
+                android:text="Aan het laden.."/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

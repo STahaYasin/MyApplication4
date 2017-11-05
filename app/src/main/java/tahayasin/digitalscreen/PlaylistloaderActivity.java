@@ -142,15 +142,18 @@ public class PlaylistloaderActivity extends Activity {
 
                     Bitmap btm = null;
 
-                    if(playListObject.getVariabele() != ""){
-                        try {
-                            btm = new ImageDownloader(playListObject.getVariabele()).execute().get();
+                    if(playListObject.getType() == "2"){
+                        if(playListObject.getVariabele() != ""){
+                            try {
+                                btm = new ImageDownloader(playListObject.getVariabele()).execute().get();
+                            }
+                            catch (Exception e){
+                                String a = e.getMessage();
+                            }
                         }
-                        catch (Exception e){
+                        else{
 
                         }
-                    }
-                    else{
 
                     }
 

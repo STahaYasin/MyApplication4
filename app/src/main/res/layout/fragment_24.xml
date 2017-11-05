@@ -81,14 +81,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:id="@+id/fragment_20_profile" />
+                    android:src="@drawable/fblogo"
+                    android:id="@+id/fragment_24_profile" />
 
                 <ImageView
                     android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:id="@+id/fragment_20_qr" />
+                    android:id="@+id/fragment_24_qr" />
                 
 
                 

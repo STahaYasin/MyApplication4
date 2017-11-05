@@ -3,6 +3,7 @@ package tahayasin.digitalscreen;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Taha Yasin on 2/11/2017.
@@ -30,8 +31,8 @@ public class DateTimeFactory {
         return str;
     }
     public static String parseDateToddMMyyyy(String time, String inputPattern, String outputPattern) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, new Locale("nl", "NL"));
 
         Date date = null;
         String str = null;

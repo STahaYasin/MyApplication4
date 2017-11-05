@@ -40,7 +40,7 @@ public class FragmentFactory {
             case "20": fragment = new Fragment_20();  break; //Twitter tweets
             case "21": fragment = new Fragment_X();  break;
             case "22": fragment = new Fragment_X();  break;
-            case "23": fragment = new Fragment_X();  break;
+            case "23": fragment = new Fragment_23();  break; // WEER
             case "24": fragment = new Fragment_24();  break; // Facebook likes
             case "25": fragment = new Fragment_X();  break;
             case "26": fragment = new Fragment_X();  break;
@@ -53,7 +53,7 @@ public class FragmentFactory {
             case "32": fragment = new Fragment_X();  break;
             case "33": fragment = new Fragment_X();  break;
             case "34": fragment = new Fragment_X();  break;
-            case "35": fragment = new Fragment_X();  break;
+            case "35": fragment = new Fragment_35();  break; // De morgen
             case "36": fragment = new Fragment_36();  break; // De standaard
             case "37": fragment = new Fragment_X();  break;
             case "38": fragment = new Fragment_X();  break;
@@ -89,7 +89,7 @@ public class FragmentFactory {
             case "65": fragment = new Fragment_X();  break;
             case "66": fragment = new Fragment_X();  break;
             case "67": fragment = new Fragment_X();  break;
-            case "68": fragment = new Fragment_X();  break;
+            case "68": fragment = new Fragment_68();  break; // Instagram
             case "69": fragment = new Fragment_X();  break;
 
             //TODO add up to 63 items

@@ -15,4 +15,6 @@
     <string name="activity_uuid_desc_uuid">Dit is je UUID. Deze moet je ingeven in de webmanager om te koppelen aan jouw account. Vanaf dat je een playlist koppelt aan je apparaat, begint deze automatisch te spelen.</string>
     <string name="activity_uuid_loading_uuid">UUID alıniyor..</string>
 
+    <string name="today">BUGUN</string>
+
 </resources>

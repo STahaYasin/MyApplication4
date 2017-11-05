@@ -73,10 +73,11 @@ public class Fragment_20 extends Fragment_00 {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+
                 String aa;
                 String url = appValues.url_getTweets + "@" + playListObject.getVariabele() + "/";
                 try{
-                    aa = new GetRequestString(url).execute().get();
+                    aa = new GetRequestString(getContext(), url, false).execute().get();
                 }
                 catch (Exception e){
                     aa = "[]";
@@ -84,17 +85,23 @@ public class Fragment_20 extends Fragment_00 {
 
                 final String finalStringResult = aa;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tweets = new Gson().fromJson(finalStringResult, ObjectTweet[].class);
-                        user =(tweets[0] != null) ? tweets[0].getUser() : null;
-                        user.profile_image_url = user.profile_image_url.replace("_normal", "");
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Toast.makeText(getContext(), finalStringResult, Toast.LENGTH_LONG).show();
+                            tweets = new Gson().fromJson(finalStringResult, ObjectTweet[].class);
 
-                        setUser();
-                        setRV();
-                    }
-                });
+                            if(tweets != null){
+                                user = (tweets[0] != null) ? tweets[0].getUser() : null;
+                                user.profile_image_url = user.profile_image_url.replace("_normal", "");
+
+                                setUser();
+                                setRV();
+                            }
+                        }
+                    });
+                }
             }
         });
         t.setPriority(Thread.NORM_PRIORITY);
@@ -118,12 +125,14 @@ public class Fragment_20 extends Fragment_00 {
 
                 final Bitmap finalbtm = btm;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setProfilePic(finalbtm);
-                    }
-                });
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setProfilePic(finalbtm);
+                        }
+                    });
+                }
             }
         });
         t.setPriority(Thread.MAX_PRIORITY);
@@ -146,12 +155,14 @@ public class Fragment_20 extends Fragment_00 {
 
                 final Bitmap finalbtm = btm;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setQRImage(finalbtm);
-                    }
-                });
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setQRImage(finalbtm);
+                        }
+                    });
+                }
             }
         });
         q.setPriority(Thread.MAX_PRIORITY);

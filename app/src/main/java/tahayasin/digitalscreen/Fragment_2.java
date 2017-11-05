@@ -50,12 +50,14 @@ public class Fragment_2 extends Fragment_00 {
 
                 final Bitmap finalbtm = btm;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        iv_background.setImageBitmap(finalbtm);
-                    }
-                });
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            iv_background.setImageBitmap(finalbtm);
+                        }
+                    });
+                }
             }
         });
         t.setPriority(Thread.MAX_PRIORITY);

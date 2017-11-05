@@ -19,4 +19,5 @@
 
 
     <!-- TODO PlayListActivity here -->
+    <string name="today">TODAY</string>
 </resources>

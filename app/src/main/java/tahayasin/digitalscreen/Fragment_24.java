@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
@@ -36,6 +37,9 @@ public class Fragment_24 extends Fragment_00 {
     RecyclerView rv;
     TextView tv_name;
 
+    ImageView iv_qr;
+    ImageView iv_pr;
+
     FBRes fbRes;
     FBObject[] fbObjects;
 
@@ -53,6 +57,11 @@ public class Fragment_24 extends Fragment_00 {
         rv = (RecyclerView) v.findViewById(R.id.fragment_24_rv);
         tv_name = (TextView) v.findViewById(R.id.fragment_24_name);
         tv_name.setText(playListObject.getNaam());
+        iv_qr = (ImageView) v.findViewById(R.id.fragment_24_qr);
+        getQR();
+
+        iv_pr = (ImageView) v.findViewById(R.id.fragment_24_profile);
+        getProfile();
 
         return v;
     }
@@ -62,6 +71,68 @@ public class Fragment_24 extends Fragment_00 {
 
         getFacebookMessages();
 
+    }
+    private void getQR(){
+        final String url = "https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=http://www.facebook.com/" + playListObject.getVariabele();// + "&chld=H|0";
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap btm;
+
+                try {
+                    btm = new ImageDownloader(url).execute().get();
+                }
+                catch (Exception e){
+                    btm = null;
+                }
+
+                final Bitmap fBtm = btm;
+
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            iv_qr.setImageBitmap(fBtm);
+                        }
+                    });
+                }
+            }
+        });
+        t.setPriority(Thread.MAX_PRIORITY);
+        t.start();
+    }
+    private void getProfile(){
+        final String url = "http://graph.facebook.com/" + playListObject.getVariabele() + "/picture?type=large";
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap btm;
+
+                try {
+                    btm = new ImageDownloader(url).execute().get();
+                }
+                catch (Exception e){
+                    btm = null;
+                }
+
+                final Bitmap fBtm = btm;
+
+                if(getActivity() != null){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(fBtm != null){
+                                iv_pr.setImageBitmap(fBtm);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        t.setPriority(Thread.MAX_PRIORITY);
+        t.start();
     }
     private void getFacebookMessages(){
         final String url = "https://www.digitalscreen.be/fbdata.php?var=" + playListObject.getVariabele();
@@ -123,7 +194,7 @@ public class Fragment_24 extends Fragment_00 {
         }
         @Override
         public void onBindViewHolder(ItemHolder holder, int position) {
-            holder.fb_message.setText(fbObjects[position].message);
+            holder.fb_message.setText(Html.fromHtml(fbObjects[position].message));
         }
 
         @Override
