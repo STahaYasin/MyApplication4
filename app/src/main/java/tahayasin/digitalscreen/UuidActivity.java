@@ -22,7 +22,7 @@ public class UuidActivity extends Activity {
         checkUuidLocally();
     }
     private void checkUuidLocally(){
-        String myUuid = appValues.getUUID(this);
+        String myUuid = appValues.getUUIDFroSharedPrefences(this);
 
         if(myUuid.equals("UUID")){
             getNewUuid();

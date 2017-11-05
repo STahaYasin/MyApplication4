@@ -36,7 +36,7 @@ public class PlaylistloaderActivity extends Activity {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = "https://www.digitalscreen.be/api/hasplaylist/" + appValues.getUUID(context) + "/";
+                String url = "https://www.digitalscreen.be/api/hasplaylist/" + appValues.getUUIDFroSharedPrefences(context) + "/";
                 String hasPlayListString;
 
                 try{
@@ -98,7 +98,7 @@ public class PlaylistloaderActivity extends Activity {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String url = "https://www.digitalscreen.be/api/getplaylist/" + appValues.getUUID(context) + "/";
+                String url = "https://www.digitalscreen.be/api/getplaylist/" + appValues.getUUIDFroSharedPrefences(context) + "/";
 
                 String jsonPlaylistString;
                 try{

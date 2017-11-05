@@ -188,7 +188,7 @@ public class Fragment_35 extends Fragment_00 {
                 holder.tv_title.setText(items[position].title);
 
             if(holder.tv_description != null)
-                holder.tv_description.setText(Html.fromHtml(items[position].description));
+                holder.tv_description.setText(Html.fromHtml((items[position].description != null)? items[position].description : ""));
 
             if(holder.iv_image != null){
                 if(items[position].enclosure != null && items[position].enclosure.url != ""){

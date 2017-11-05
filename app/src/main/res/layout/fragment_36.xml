@@ -30,11 +30,13 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/fragment_36_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="82dp"
-                android:id="@+id/fragment_36_date"
-                android:text="Aan het laden.."/>
+                android:text="Aan het laden.."
+                android:textColor="#fff"
+                android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

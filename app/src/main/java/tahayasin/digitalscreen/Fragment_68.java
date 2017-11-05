@@ -79,7 +79,7 @@ public class Fragment_68 extends Fragment_00 {
     private void gotData(InstaResult instaResult){
         Node[] nodes = instaResult.user.media.nodes;
 
-        rv.setLayoutManager(new GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false));
+        rv.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         rv.setAdapter(new PhotoAdapter(nodes));
     }
 
@@ -98,33 +98,42 @@ public class Fragment_68 extends Fragment_00 {
         @Override
         public void onBindViewHolder(final PhotoHolder holder, int position) {
             final String url = nodes[position].display_src;
+            if(url != null && url != ""){
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap btm;
 
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap btm = null;
+                        try {
+                            btm = new ImageDownloader(url).execute().get();
+                        }
+                        catch (Exception e){
+                            btm = null;
+                        }
 
-                    try {
-                        btm = new ImageDownloader(url).execute().get();
+                        final Bitmap fBtm = btm;
+
+                        if(getActivity() != null){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        if(PhotoAdapter.this != null && rv != null && holder != null && fBtm != null && fBtm.getHeight() > 0) {
+                                            holder.iv.setImageBitmap(fBtm);
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        holder.iv.setImageResource(R.drawable.dm_logo_small);
+                                    }
+                                }
+                            });
+                        }
                     }
-                    catch (Exception e){
-                        btm = null;
-                    }
+                });
+                t.setPriority(Thread.MAX_PRIORITY);
 
-                    final Bitmap fBtm = btm;
-
-                    if(getActivity() != null){
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.iv.setImageBitmap(fBtm);
-                            }
-                        });
-                    }
-                }
-            });
-            t.setPriority(Thread.MAX_PRIORITY);
-            t.start();
+                t.start();
+            }
         }
 
         @Override

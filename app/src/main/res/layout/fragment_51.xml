@@ -48,11 +48,12 @@
                         android:id="@+id/fragment_51_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
                         android:layout_marginStart="10dp"
-                        android:text="Aan het laden.."
+                        android:fontFamily="sans-serif"
+                        android:text="Kinepolis"
                         android:textColor="@color/type_20_title"
-                        android:textSize="30sp" />
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
 
                 </LinearLayout>
                 <LinearLayout

@@ -28,12 +28,26 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         //If not download the file
         String urldisplay = url;
         Bitmap mIcon11 = null;
+
+        InputStream in;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
+            in = new java.net.URL(urldisplay).openStream();
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
+            in = null;
+        }
+
+        if(in != null){
+            try {
+                mIcon11 = BitmapFactory.decodeStream(in);
+            }
+            catch (Exception e){
+                mIcon11 = null;
+            }
+        }
+        else{
+            mIcon11 = null;
         }
         return mIcon11;
     }

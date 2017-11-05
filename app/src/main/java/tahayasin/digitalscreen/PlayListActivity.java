@@ -40,7 +40,7 @@ public class PlayListActivity extends FragmentActivity implements Fragment_00.On
         isAtPlayItem = 0;
     }
     void startAnimationTimer(){
-        final Integer timer = appValues.getDelay(Integer.valueOf(playList[isAtPlayItem].getLengte()));
+        final Integer timer = appValues.getDelayInMillis(Integer.valueOf(playList[isAtPlayItem].getLengte()));
 
         Thread t = new Thread(new Runnable() {
             @Override

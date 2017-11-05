@@ -82,6 +82,7 @@ public class Fragment_51 extends Fragment_00 {
             String html = htmlDocument.toString();
 
             html = html.replace("<meta charset=\"utf-8\">", "<meta charset=\"utf-8\"><base href=\"https://www.kinepolis.be\"/>");
+            html = html.replace("data-src", "src");
 
             final String fHtml = html;
 

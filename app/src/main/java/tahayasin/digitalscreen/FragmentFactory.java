@@ -14,6 +14,8 @@ public class FragmentFactory {
 
         Fragment fragment = null;
 
+        fragment = new Fragment_X();
+
         switch (type){
             case "0": fragment = new Fragment_X();  break;
             case "1": fragment = new Fragment_X();  break;

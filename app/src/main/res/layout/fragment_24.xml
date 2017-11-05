@@ -49,6 +49,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:text="@string/name"
+                        android:textStyle="bold"
                         android:textColor="@color/type_20_title"
                         android:textSize="30sp" />
 

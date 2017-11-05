@@ -14,13 +14,14 @@ public class appValues {
     public static String prefenceUuid = "shP_UUID";
     public static int refreshTimeMillis = 2000;
 
-    public static String getUUID(@NonNull Context context){
+    public static String getUUIDFroSharedPrefences(@NonNull Context context){
         SharedPreferences settings = context.getSharedPreferences(prefenceUuid, MODE_PRIVATE);
-        //return settings.getString(prefenceUuid, "UUID");
-        return "7901bb57f7"; //TODO change static id to dynamic
-        //return "4cf73014ae";
+        //return settings.getString(prefenceUuid, "UUID"); //TODO change static id to dynamic
+        return "7901bb57f7"; // TEKNOZA
+        //return "4cf73014ae"; //TAHA
+        //return "2c32f3df28"; //FAT
     }
-    public static int getDelay(int sec){
+    public static int getDelayInMillis(int sec){
         //return sec * 1000;
         return 5000;
     }
