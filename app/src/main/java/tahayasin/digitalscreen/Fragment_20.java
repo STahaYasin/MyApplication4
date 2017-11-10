@@ -1,5 +1,6 @@
 package tahayasin.digitalscreen;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,10 @@ public class Fragment_20 extends Fragment_00 {
 
     private ObjectTweet[] tweets;
     private ObjectTweet.User user;
+
+    String twitterMessages = null;
+    Bitmap btm_profile = null;
+    Bitmap btm_qr = null;
 
 
 
@@ -70,6 +76,8 @@ public class Fragment_20 extends Fragment_00 {
         }
     }
     private void getTweets(){
+        useData();
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,28 +85,20 @@ public class Fragment_20 extends Fragment_00 {
                 String aa;
                 String url = appValues.url_getTweets + "@" + playListObject.getVariabele() + "/";
                 try{
-                    aa = new GetRequestString(getContext(), url, false).execute().get();
+                    aa = new GetRequestString(url).execute().get();
                 }
                 catch (Exception e){
-                    aa = "[]";
+                    aa = "";
                 }
 
                 final String finalStringResult = aa;
 
-                if(getActivity() != null){
+                if(getActivity() != null && finalStringResult != ""){
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //Toast.makeText(getContext(), finalStringResult, Toast.LENGTH_LONG).show();
-                            tweets = new Gson().fromJson(finalStringResult, ObjectTweet[].class);
-
-                            if(tweets != null){
-                                user = (tweets[0] != null) ? tweets[0].getUser() : null;
-                                user.profile_image_url = user.profile_image_url.replace("_normal", "");
-
-                                setUser();
-                                setRV();
-                            }
+                            twitterMessages = finalStringResult;
+                            useData();
                         }
                     });
                 }
@@ -107,8 +107,24 @@ public class Fragment_20 extends Fragment_00 {
         t.setPriority(Thread.NORM_PRIORITY);
         t.start();
     }
+    private void useData(){
+        if(twitterMessages == null || twitterMessages == "") return;
+
+        tweets = new Gson().fromJson(twitterMessages, ObjectTweet[].class);
+
+        if(tweets != null){
+            user = (tweets[0] != null) ? tweets[0].getUser() : null;
+            user.profile_image_url = user.profile_image_url.replace("_normal", "");
+
+            setUser();
+            setRV();
+        }
+    }
     private void setUser(){
         tv_type.setText("@" + user.name.toUpperCase());
+
+        setProfilePic();
+        setQRImage();
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -129,7 +145,8 @@ public class Fragment_20 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            setProfilePic(finalbtm);
+                            if(finalbtm != null) btm_profile = finalbtm;
+                            setProfilePic();
                         }
                     });
                 }
@@ -137,10 +154,13 @@ public class Fragment_20 extends Fragment_00 {
         });
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
+        final Context _context = context;
 
         Thread q = new Thread(new Runnable() {
             @Override
             public void run() {
+
+
 
                 String qrurl = "https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=http://www.twitter.com/" + playListObject.getVariabele() + "&chld=H|0'";
 
@@ -159,7 +179,8 @@ public class Fragment_20 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            setQRImage(finalbtm);
+                            if(finalbtm != null) btm_qr = finalbtm;
+                            setQRImage();
                         }
                     });
                 }
@@ -168,13 +189,13 @@ public class Fragment_20 extends Fragment_00 {
         q.setPriority(Thread.MAX_PRIORITY);
         q.start();
     }
-    private void setProfilePic(Bitmap btm){
-        if(btm != null)
-            iv_profile.setImageBitmap(btm);
+    private void setProfilePic(){
+        if(btm_profile != null)
+            iv_profile.setImageBitmap(btm_profile);
     }
-    private void setQRImage(Bitmap btm){
-        if(btm != null)
-            iv_qr.setImageBitmap(btm);
+    private void setQRImage(){
+        if(btm_qr != null)
+            iv_qr.setImageBitmap(btm_qr);
     }
     private void setRV(){
         rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));

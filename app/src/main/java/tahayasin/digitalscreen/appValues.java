@@ -34,4 +34,22 @@ public class appValues {
     //Time
     public static Integer defaultTimeInSec = 5;
     public static Integer defaultTimeInMilli = defaultTimeInSec * 1000;
+
+    public static String makeName(String z){
+
+        String a = z;
+
+        String b = "-";
+
+        a = a.replace("/", b);
+        a = a.replace(":", b);
+        a = a.replace("&", b);
+        a = a.replace("=", b);
+        a = a.replace("@", b);
+        a = a.replace(".", b);
+
+        a = ("file" + b + a);
+
+        return a.toString();
+    }
 }

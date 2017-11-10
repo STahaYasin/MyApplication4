@@ -15,9 +15,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Field;
+import java.util.zip.Inflater;
 
 
 public class Fragment_23 extends Fragment_00 {
+
+    String data = null;
 
     ImageView iv_0;
     ImageView iv_1;
@@ -49,7 +52,10 @@ public class Fragment_23 extends Fragment_00 {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_23, container, false);
+        //LayoutInflater li = getActivity().getLayoutInflater();
+        //View v =inflater.inflate(R.layout.fragment_23, container, false);
+        //View v = li.inflate(R.layout.fragment_23, container, false);
+        View v = LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_23, container, false);
 
         iv_0 = (ImageView) v.findViewById(R.id.fragment_23_00_icon);
         iv_1 = (ImageView) v.findViewById(R.id.fragment_23_01_icon);
@@ -82,6 +88,8 @@ public class Fragment_23 extends Fragment_00 {
         getData();
     }
     private void getData(){
+        gotData();
+
         final String url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D\"antwerpen%2C%20ak\")%20and%20u='C'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 
         Thread t = new Thread(new Runnable() {
@@ -96,13 +104,16 @@ public class Fragment_23 extends Fragment_00 {
                     data_string = "";
                 }
 
-                final WheatherObject finalWheatherObject = new Gson().fromJson(data_string, WheatherObject.class);
+                final String fRes = data_string;
 
                 if(getActivity() != null){
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            gotData(finalWheatherObject);
+                            if(fRes != null && fRes != ""){
+                                data = fRes;
+                            }
+                            gotData();
                         }
                     });
                 }
@@ -111,18 +122,19 @@ public class Fragment_23 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
-    private void gotData(WheatherObject wheatherObject){
-        if(wheatherObject == null){
-            Toast.makeText(getContext(), "Cannot get data!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void gotData(){
+        if(data == null || data == "") return;
+        final WheatherObject finalWheatherObject = new Gson().fromJson(data, WheatherObject.class);
 
-        Channel.Forecast[] forecasts = wheatherObject.query.results.channel.item.forecast;
+        if(finalWheatherObject == null) return;
+
+
+        Channel.Forecast[] forecasts = finalWheatherObject.query.results.channel.item.forecast;
 
         setTempValues(forecasts);
 
-        if(tv_0_n != null) tv_0_n.setText(wheatherObject.query.results.channel.atmosphere.humidity + "%");
-        if(tv_0_r != null) tv_0_r.setText(wheatherObject.query.results.channel.wind.direction + "°");
+        if(tv_0_n != null) tv_0_n.setText(finalWheatherObject.query.results.channel.atmosphere.humidity + "%");
+        if(tv_0_r != null) tv_0_r.setText(finalWheatherObject.query.results.channel.wind.direction + "°");
 
         setDateValues(forecasts);
         setImageValues(forecasts);

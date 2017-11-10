@@ -26,16 +26,23 @@ public class GetRequestString extends AsyncTask<String, String, String> {
     private String myurl;
     private boolean saveToStorage;
     Context context;
+    private ISaveText iSaveText;
 
     public GetRequestString(String _url){
         myurl = _url;
         saveToStorage = false;
     }
-    public GetRequestString(Context context, String _url, boolean _saveToStorage){
+    /*public GetRequestString(Context context, String _url, boolean _saveToStorage){
         myurl = _url;
-        saveToStorage = _saveToStorage;
+        saveToStorage = false;
         this.context = context;
     }
+    public GetRequestString(Context context, String _url, boolean _saveToStorage, ISaveText iSaveText){
+        myurl = _url;
+        saveToStorage = false;
+        this.context = context;
+        this.iSaveText = iSaveText;
+    }*/
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -70,12 +77,12 @@ public class GetRequestString extends AsyncTask<String, String, String> {
         return result;
     }
     private String getAndSave(){
-        final String fileName = "qq";
+        final String fileName = myurl;
+        final String __fileName = getNewString(myurl);
 
         String data;
-        data = readFromFile(fileName);
-
-        final String fData = data;
+        data = readFromFile(__fileName);
+        //data = iSaveText.getText(__fileName);
 
         Runnable runnable = new Runnable() {
             @Override
@@ -98,28 +105,32 @@ public class GetRequestString extends AsyncTask<String, String, String> {
 
                 final String fResult = result;
 
-                writeToFile(fileName, fResult);
+                writeToFile(__fileName, fResult);
+                //iSaveText.setText(__fileName, fResult);
             }
         };
 
-        Thread t = new Thread(runnable);
-        t.setPriority(Thread.MAX_PRIORITY);
+        String q;
 
         if(data != null && data != ""){
+            Thread t = new Thread(runnable);
+            t.setPriority(Thread.MAX_PRIORITY);
+
             t.start();
             return data;
         }
         else {
             runnable.run();
-            return readFromFile(fileName);
+            return readFromFile(__fileName);
+            //return iSaveText.getText(__fileName);
         }
     }
     private String readFromFile(String fileName){
         if(context == null) return null;
 
         try {
-            FileInputStream fis = new FileInputStream(new File(fileName));
-            //FileInputStream fis = context.openFileInput(fileName);
+            //FileInputStream fis = new FileInputStream(new File(fn));
+            FileInputStream fis = context.openFileInput(fileName);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -146,5 +157,22 @@ public class GetRequestString extends AsyncTask<String, String, String> {
         } catch (Exception e) {
             String a = e.getMessage();
         }
+    }
+    private String getNewString(String z){
+
+        String a = z;
+
+        String b = "-";
+
+        a = a.replace("/", b);
+        a = a.replace(":", b);
+        a = a.replace("&", b);
+        a = a.replace("=", b);
+        a = a.replace("@", b);
+        a = a.replace(".", b);
+
+        a = ("file" + b + a);
+
+        return a.toString();
     }
 }

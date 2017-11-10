@@ -1,11 +1,14 @@
 package tahayasin.digitalscreen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.FrameLayout;
+
+import java.util.ArrayList;
 
 public class PlayListActivity extends FragmentActivity implements Fragment_00.OnFragmentInteractionListener {
 
@@ -14,6 +17,9 @@ public class PlayListActivity extends FragmentActivity implements Fragment_00.On
 
     PlayListObjects[] playList;
     Integer isAtPlayItem = 0;
+
+    private ArrayList<BitmapNameValue> bitmapNameValues;
+    private ArrayList<TextNameValue> textNameValues = new ArrayList<>();
 
     final Context context = this;
 
@@ -72,6 +78,7 @@ public class PlayListActivity extends FragmentActivity implements Fragment_00.On
         //if(fragments[isAtPlayItem] != null)
         // getSupportFragmentManager().beginTransaction().add(R.id.container, fragments[isAtPlayItem], fragments[isAtPlayItem].getTag()).addToBackStack(fragments[isAtPlayItem].getTag() + String.valueOf(isAtPlayItem)).commit();
         //Toast.makeText(context, ((Fragment_00) fragments[isAtPlayItem]).getPlayListObject().getNaam(), Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().remove((isAtPlayItem > 0) ? fragments[isAtPlayItem - 1] : fragments[fragments.length - 1]).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragments[isAtPlayItem]).commit();
         startAnimationTimer();
     }
@@ -79,5 +86,15 @@ public class PlayListActivity extends FragmentActivity implements Fragment_00.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+
+    public class BitmapNameValue{
+        public String name;
+        public Bitmap btm;
+    }
+    public class TextNameValue{
+        public String name;
+        public String text;
     }
 }

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.XML;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,6 +30,9 @@ public class Fragment_57 extends Fragment_00 {
     ImageView iv_background;
     ImageView iv_imageData;
     WebView webView;
+
+    Bitmap image = null;
+    String data = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,15 +59,17 @@ public class Fragment_57 extends Fragment_00 {
 
         tv_type.setText(playListObject.getNaam());
 
-        downloadBackGround();
+        //downloadBackGround();
         downloadImageData();
     }
     private void downloadBackGround(){
+
+        final String region = (playListObject.getVariabele() != null) ? playListObject.getVariabele() : "vlaanderen";
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                //TODO change regio
-                String url = "http://www.filebeeld.be/traffic/image?format=LARGE&region=antwerpen&colorblind=false&width=1920&height=1080&aspectratio=16:9";
+                String url = "http://www.filebeeld.be/traffic/image?format=LARGE&region=" + region + "&colorblind=false&width=1920&height=1080&aspectratio=16:9";
                 Bitmap btm = null;
 
                 try{
@@ -99,64 +106,19 @@ public class Fragment_57 extends Fragment_00 {
     }
 
     private void downloadData(){
+        gotList();
+
+        final String region = (playListObject.getVariabele() != null) ? playListObject.getVariabele() : "vlaanderen";
+
         final WebView _webView = webView;
 
-        /*Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String a;
-
-                try{
-                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=antwerpen").execute().get();
-                }
-                catch (Exception e){
-                    a = "";
-                }
-
-                final String domString = a;
-
-                if(getActivity() != null){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            webView.getSettings().setJavaScriptEnabled(true);
-                            webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
-
-                            Document doc = Jsoup.parse(domString);
-                            final Elements ele = doc.select("div#info");
-
-
-                            final String mime = "text/html";
-                            final String encoding = "utf-8";
-
-                            webView.setWebChromeClient(new WebChromeClient());
-                            webView.getSettings().setJavaScriptEnabled(true);
-                            webView.getSettings().setDomStorageEnabled(true);
-
-                            webView.setWebViewClient(new WebViewClient() {
-                                @Override
-                                public void onPageFinished(WebView view, String url)
-                                {
-                                    webView.loadData(ele.toString(), mime, encoding);
-                                }
-                                });
-
-
-                            webView.loadUrl("http://www.filebeeld.be/mobiel/kaart?region=antwerpen#info");
-
-
-                        }
-                    });
-                }
-            }
-        });*/
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 String a;
 
                 try{
-                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=" + playListObject.getVariabele()).execute().get(); // TODO region
+                    a = new GetRequestString("http://www.filebeeld.be/mobiel/kaart?region=" + region).execute().get(); // TODO region
                 }
                 catch (Exception e){
                     a = "";
@@ -183,7 +145,10 @@ public class Fragment_57 extends Fragment_00 {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                webView.loadData(fHtml, "text/html", "UTF-8");
+                                if(fHtml != null && fHtml != ""){
+                                    data = fHtml;
+                                }
+                                gotList();
                             }
                         });
                     }
@@ -196,12 +161,20 @@ public class Fragment_57 extends Fragment_00 {
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }
+    private void gotList(){
+        if(data == null) return;
+
+        webView.loadData(data, "text/html", "UTF-8");
+    }
     private void downloadImageData(){
+        gotImage();
+        final String region = (playListObject.getVariabele() != null) ? playListObject.getVariabele() : "vlaanderen";
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 //TODO change regio
-                String url = "http://www.filebeeld.be/traffic/image?format=LARGE&region=antwerpen&colorblind=false&width=1920&height=1080&aspectratio=16:9";
+                String url = "http://www.filebeeld.be/traffic/image?format=LARGE&region=" + region + "&colorblind=false&width=1920&height=1080&aspectratio=16:9";
                 Bitmap btm = null;
 
                 try{
@@ -217,13 +190,21 @@ public class Fragment_57 extends Fragment_00 {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        iv_imageData.setImageBitmap(finalbtm);
-                        downloadData();
+                        if(finalbtm != null){
+                            image = finalbtm;
+                        }
+                        gotImage();
                     }
                 });
             }
         });
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
+    }
+    private void gotImage(){
+        if(image == null) return;
+
+        iv_imageData.setImageBitmap(image);
+        downloadData();
     }
 }

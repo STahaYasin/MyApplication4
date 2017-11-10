@@ -40,8 +40,11 @@ public class Fragment_24 extends Fragment_00 {
     ImageView iv_qr;
     ImageView iv_pr;
 
+    String data;
     FBRes fbRes;
     FBObject[] fbObjects;
+    Bitmap btm_profile = null;
+    Bitmap btm_qr = null;
 
 
     @Override
@@ -52,7 +55,10 @@ public class Fragment_24 extends Fragment_00 {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_24, container, false);
+        //LayoutInflater li = getActivity().getLayoutInflater();
+        //View v = inflater.inflate(R.layout.fragment_24, container, false);
+        //View v = li.inflate(R.layout.fragment_24, container, false);
+        View v = LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_24, container, false);
 
         rv = (RecyclerView) v.findViewById(R.id.fragment_24_rv);
         tv_name = (TextView) v.findViewById(R.id.fragment_24_name);
@@ -73,6 +79,7 @@ public class Fragment_24 extends Fragment_00 {
 
     }
     private void getQR(){
+        setQR();
         final String url = "https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=http://www.facebook.com/" + playListObject.getVariabele();// + "&chld=H|0";
 
         Thread t = new Thread(new Runnable() {
@@ -93,7 +100,8 @@ public class Fragment_24 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            iv_qr.setImageBitmap(fBtm);
+                            if(fBtm != null) btm_qr = fBtm;
+                            setQR();
                         }
                     });
                 }
@@ -102,7 +110,11 @@ public class Fragment_24 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
+    private void setQR(){
+        iv_qr.setImageBitmap(btm_qr);
+    }
     private void getProfile(){
+        setProfile();
         final String url = "http://graph.facebook.com/" + playListObject.getVariabele() + "/picture?type=large";
 
         Thread t = new Thread(new Runnable() {
@@ -124,7 +136,8 @@ public class Fragment_24 extends Fragment_00 {
                         @Override
                         public void run() {
                             if(fBtm != null){
-                                iv_pr.setImageBitmap(fBtm);
+                                if(fBtm != null) btm_profile = fBtm;
+                                setProfile();
                             }
                         }
                     });
@@ -134,7 +147,12 @@ public class Fragment_24 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
+    private void setProfile(){
+        if(btm_profile == null) return;
+        iv_pr.setImageBitmap(btm_profile);
+    }
     private void getFacebookMessages(){
+        gotFacebookMessages();
         final String url = "https://www.digitalscreen.be/fbdata.php?var=" + playListObject.getVariabele();
 
         Thread t = new Thread(new Runnable() {
@@ -154,7 +172,8 @@ public class Fragment_24 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            gotFacebookMessages(fres);
+                            if(fres != null) data = fres;
+                            gotFacebookMessages();
                         }
                     });
                 }
@@ -163,8 +182,12 @@ public class Fragment_24 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
-    private void gotFacebookMessages(String a){
-        fbRes = new Gson().fromJson(a, FBRes.class);
+    private void gotFacebookMessages(){
+        if(data == null || data == "") return;
+
+        fbRes = new Gson().fromJson(data, FBRes.class);
+
+        if(fbRes == null) return;
 
         rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FBObjectAdapter(fbRes.post_info));

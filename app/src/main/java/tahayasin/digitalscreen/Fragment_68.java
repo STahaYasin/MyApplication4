@@ -1,6 +1,7 @@
 package tahayasin.digitalscreen;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,7 +32,8 @@ public class Fragment_68 extends Fragment_00 {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_68, container, false);
+        //View v =inflater.inflate(R.layout.fragment_68, container, false);
+        View v = LayoutInflater.from(container.getContext()).inflate(R.layout.fragment_68, container, false);
 
         rv = (RecyclerView) v.findViewById(R.id.fragment_68_rv);
         tv_name = (TextView) v.findViewById(R.id.fragment_68_name);
@@ -47,7 +49,7 @@ public class Fragment_68 extends Fragment_00 {
         downloadUserData();
     }
     private void downloadUserData(){
-        final String url = "https://www.instagram.com/" + playListObject.getVariabele() + "/?__a=1";
+        final String url = "https://www.instagram.com/" + playListObject.getVariabele().toLowerCase() + "/?__a=1";
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -97,11 +99,14 @@ public class Fragment_68 extends Fragment_00 {
 
         @Override
         public void onBindViewHolder(final PhotoHolder holder, int position) {
-            final String url = nodes[position].display_src;
+            final String url = nodes[position].thumbnail_src;
             if(url != null && url != ""){
                 Thread t = new Thread(new Runnable() {
                     @Override
                     public void run() {
+
+                        //Picasso.with(context).load(url).into(holder.iv);
+
                         Bitmap btm;
 
                         try {
@@ -110,6 +115,11 @@ public class Fragment_68 extends Fragment_00 {
                         catch (Exception e){
                             btm = null;
                         }
+
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inJustDecodeBounds = true;
+                        options.inSampleSize = 2;
+                        options.inJustDecodeBounds = false;
 
                         final Bitmap fBtm = btm;
 
@@ -256,5 +266,6 @@ public class Fragment_68 extends Fragment_00 {
         @SerializedName("thumbnail_src")
         @Expose
         public String thumbnail_src;
+
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 public class Fragment_2 extends Fragment_00 {
 
     ImageView iv_background;
+    Bitmap image;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class Fragment_2 extends Fragment_00 {
     }
 
     private void setBackground(){
+        setImage();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,7 +56,8 @@ public class Fragment_2 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            iv_background.setImageBitmap(finalbtm);
+                            if(finalbtm != null) image = finalbtm;
+                            setImage();
                         }
                     });
                 }
@@ -62,5 +65,10 @@ public class Fragment_2 extends Fragment_00 {
         });
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
+    }
+    private void setImage(){
+        if(image == null) return;
+
+        iv_background.setImageBitmap(image);
     }
 }

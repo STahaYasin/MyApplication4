@@ -19,6 +19,8 @@ public class Fragment_51 extends Fragment_00 {
     ImageView iv_background;
     WebView wv;
 
+    String data;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,8 @@ public class Fragment_51 extends Fragment_00 {
         downloadData();
     }
     private void downloadData(){
+        useData();
+
         final String contentUrl = "https://kinepolis.be/nl/vandaag";
 
         Thread t = new Thread(new Runnable() {
@@ -62,7 +66,22 @@ public class Fragment_51 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            useData(fRes);
+                            if(fRes != null && fRes != ""){
+                                Document htmlDocument = Jsoup.parse(fRes);
+                                //Document htmlDocument = Jsoup.connect("http://darebee.com/").get(); // TODO original code
+                                Element element = htmlDocument.select("#kinepolis-movie-overview-movies").first();
+
+                                // replace body with selected element
+                                htmlDocument.body().empty().append(element.toString());
+                                String html = htmlDocument.toString();
+
+                                html = html.replace("<meta charset=\"utf-8\">", "<meta charset=\"utf-8\"><base href=\"https://www.kinepolis.be\"/>");
+                                html = html.replace("data-src", "src");
+
+                                final String fHtml = html;
+                                data = fHtml;
+                            }
+                            useData();
                         }
                     });
                 }
@@ -71,27 +90,15 @@ public class Fragment_51 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
-    void useData(String data){
+    void useData(){
+        if(data == null || data == "") return;
+
         try {
-            Document htmlDocument = Jsoup.parse(data);
-            //Document htmlDocument = Jsoup.connect("http://darebee.com/").get(); // TODO original code
-            Element element = htmlDocument.select("#kinepolis-movie-overview-movies").first();
-
-            // replace body with selected element
-            htmlDocument.body().empty().append(element.toString());
-            String html = htmlDocument.toString();
-
-            html = html.replace("<meta charset=\"utf-8\">", "<meta charset=\"utf-8\"><base href=\"https://www.kinepolis.be\"/>");
-            html = html.replace("data-src", "src");
-
-            final String fHtml = html;
-
-
             if(getActivity() != null){
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        wv.loadData(fHtml, "text/html", "UTF-8");
+                        wv.loadData(data, "text/html", "UTF-8");
                     }
                 });
             }

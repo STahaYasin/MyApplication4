@@ -18,11 +18,15 @@ import com.google.gson.annotations.SerializedName;
 
 import org.json.XML;
 
+import java.util.ArrayList;
 
-public class Fragment_35 extends Fragment_00 {
+
+public class Fragment_35 extends Fragment_00 implements ISaveImages {
 
     RecyclerView rv;
     TextView tv_date;
+    private String data = null;
+    private ArrayList<BitmapIndexPair> bitmaps;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,8 @@ public class Fragment_35 extends Fragment_00 {
         getData();
     }
     private void getData(){
+        gotData();
+
         final String url = "http://www.demorgen.be/nieuws/rss.xml";
         Thread t = new Thread(new Runnable() {
             @Override
@@ -66,7 +72,10 @@ public class Fragment_35 extends Fragment_00 {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            gotData(b);
+                            if(b != null && b != ""){
+                                data = b;
+                            }
+                            gotData();
                         }
                     });
                 }
@@ -75,7 +84,9 @@ public class Fragment_35 extends Fragment_00 {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
     }
-    private void gotData(String data){
+    private void gotData(){
+        if(data == null || data == "") return;
+
         String jsonData;
 
         try {
@@ -101,10 +112,35 @@ public class Fragment_35 extends Fragment_00 {
         }
 
         rv.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
-        rv.setAdapter(new ItemAdapter(items));
+        rv.setAdapter(new ItemAdapter(items, (ISaveImages) this));
 
 
     }
+
+    @Override
+    public void setBitmap(String name, Bitmap btm) {
+        if(bitmaps == null) bitmaps = new ArrayList<>();
+
+        BitmapIndexPair bitmapIndexPair = new BitmapIndexPair();
+        bitmapIndexPair.name = name;
+        bitmapIndexPair.bitmap = btm;
+
+        bitmaps.add(bitmapIndexPair);
+    }
+
+    @Override
+    public Bitmap getBitmap(String name) {
+        if(bitmaps == null) return null;
+
+        Bitmap btm = null;
+        for(int i = 0; i < bitmaps.size(); i ++){
+            if(bitmaps.get(i).name.toString().equals(name.toString())){
+                btm = bitmaps.get(i).bitmap;
+            }
+        }
+        return btm;
+    }
+
     public class myextreemfuckeddata{
         @SerializedName("rss")
         @Expose
@@ -171,9 +207,11 @@ public class Fragment_35 extends Fragment_00 {
     public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder>{
 
         private Item[] items;
+        private ISaveImages iSaveImages;
 
-        public ItemAdapter(Item[] _items){
+        public ItemAdapter(Item[] _items, ISaveImages iSaveImages){
             items = _items;
+            this.iSaveImages = iSaveImages;
         }
 
         @Override
@@ -193,6 +231,10 @@ public class Fragment_35 extends Fragment_00 {
             if(holder.iv_image != null){
                 if(items[position].enclosure != null && items[position].enclosure.url != ""){
                     final String _url = items[position].enclosure.url;
+                    final String __url = appValues.makeName(_url);
+
+                    setBitmap(holder.iv_image, __url);
+
                     Thread t = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -211,8 +253,10 @@ public class Fragment_35 extends Fragment_00 {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(holder.iv_image != null)
-                                        holder.iv_image.setImageBitmap(fbtm);
+                                        if(fbtm != null){
+                                            iSaveImages.setBitmap(__url, fbtm);
+                                        }
+                                        setBitmap(holder.iv_image, __url);
                                     }
                                 });
                             }
@@ -222,6 +266,9 @@ public class Fragment_35 extends Fragment_00 {
                     t.start();
                 }
             }
+        }
+        private void setBitmap(ImageView iv, String name){
+            iv.setImageBitmap(iSaveImages.getBitmap(name));
         }
 
         @Override
